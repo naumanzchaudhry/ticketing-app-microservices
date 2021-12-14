@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { CustomBaseError } from '../errors/error-interface';
+import { CustomError } from '../errors/custom-error';
 
 export const errorHandler = (
-  err: CustomBaseError,
+  err: Error,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.status(500).send({ errors: err.serializeErrors() });
+  if (err instanceof CustomError)
+    res.status(err.statusCode).send({ errors: err.serializeErrors() });
+  else res.status(500).send({ errors: [{ message: 'Something went wrong' }] });
 };
