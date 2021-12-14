@@ -1,16 +1,20 @@
-const express = require('express');
-const { json } = require('body-parser');
+import express from 'express';
+import { json } from 'body-parser';
+
+import { currentUserRouter } from './routes/current-user';
+import { signInRouter } from './routes/signin';
+import { signoutRouter } from './routes/signout';
+import { signUpRouter } from './routes/signup';
+import { errorHandler } from './middlewares/error-handler';
+
 const app = express();
 app.use(json());
+app.use(currentUserRouter);
+app.use(signInRouter);
+app.use(signoutRouter);
+app.use(signUpRouter);
+app.use(errorHandler);
 
-app.get('/', (req, res) => {
-    res.send('Hello');
-})
-
-app.get('/api/users/currentuser', (req, res) => {
-    res.send({name: 'Nauman'})
-})
-
-app.listen(4500, () => {
-    console.log('Auth listening on port 4500');
+app.listen(3000, () => {
+  console.log('Auth listening on port 3000');
 });
